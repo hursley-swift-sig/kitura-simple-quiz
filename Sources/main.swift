@@ -12,18 +12,14 @@ router.get("/question") { req, res, next in
 }
 
 router.post("/answer") { req, res, next in
-    var answer: String?
-    if let body = req.body {
-        switch body {
-            case .text(let answer):
-                let correct = (answer == "true")
-                res.send(json: JSON([ "correct": JSON(correct ? "true" : "false") ]))
-                next()
-                return
-            default: break
-        }
+    switch req.body {
+        case .text(let answer)?:
+            let correct = (answer == "true")
+            res.send(json: JSON([ "correct": JSON(correct ? "true" : "false") ]))
+        default:
+            res.status(.badRequest)
     }
-    _  = try? res.send(status: .badRequest).end()
+    next()
 }
 
 Kitura.addHTTPServer(onPort: 8090, with: router)
