@@ -8,7 +8,7 @@ router.all(middleware: BodyParser())
 router.get("/question") { req, res, next in
     // FIXME This is not actually a question!
     res.send(json: JSON([ "question": "As far as has ever been reported, no-one has ever seen an ostrich bury its head in the sand." ]))
-    _ = try? res.end()
+    next()
 }
 
 router.post("/answer") { req, res, next in
